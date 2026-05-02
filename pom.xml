@@ -15,6 +15,14 @@
     <description>Retail discount calculation REST API using Spring Boot and MongoDB</description>
 	<properties>
 		<java.version>21</java.version>
+        <sonar.projectKey>retail-discount-service</sonar.projectKey>
+        <sonar.projectName>retail-discount-service</sonar.projectName>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.exclusions>
+            **/model/**,
+            **/config/properties/**,
+            **/RetailDiscountServiceApplication.java
+        </sonar.exclusions>
 	</properties>
     <dependencies>
 

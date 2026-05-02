@@ -802,7 +802,31 @@ docker compose down -v --remove-orphans
 docker compose up --build
 ```
 
+
+## SonarQube Quality Report Results
+
+A SonarQube analysis was executed successfully using the Maven SonarScanner.
+
+Command used:
+
+```bash
+mvn clean verify sonar:sonar \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.token=YOUR_TOKEN
+```
+
+SonarQube analysis: SUCCESSFUL
+Project key: retail-discount-service
+Dashboard: http://localhost:9000/dashboard?id=retail-discount-service
+Tests run: 38
+Failures: 0
+Errors: 0
+Build: SUCCESS
+
 ---
+
+
+
 
 ## Final Notes
 
@@ -812,5 +836,3 @@ docker compose up --build
 - The request does not provide trusted prices or categories.
 - Bills are saved as snapshots to preserve historical calculation data.
 - Docker Mongo initialization scripts run only when the Mongo volume is created for the first time.
-- `.env` should not be committed.
-- `.env.example` should be committed.
