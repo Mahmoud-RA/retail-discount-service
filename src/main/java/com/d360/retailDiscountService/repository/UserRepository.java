@@ -1,0 +1,10 @@
+package com.d360.retailDiscountService.repository;
+
+import com.d360.retailDiscountService.model.document.UserDocument;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.Optional;
+
+public interface UserRepository extends MongoRepository<UserDocument, String> {
+    Optional<UserDocument> findByUserId(Long userId);
+}
