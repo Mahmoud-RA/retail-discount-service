@@ -24,6 +24,16 @@ The service uses MongoDB for persistence, supports Docker Compose startup, appli
 
 ---
 
+## Persistence Design Note: MongoDB vs Hibernate JPA
+
+The assessment mentions both **Hibernate JPA** and **MongoDB persistence**. This implementation uses **Spring Data MongoDB** because MongoDB was explicitly required as the persistence layer.
+
+The application models are stored as MongoDB documents using Spring Data MongoDB repositories instead of relational JPA entities. Hibernate/JPA was not added because it is designed for relational database persistence, while this project persists users, items, and bills in MongoDB collections.
+
+This is an intentional design decision to keep the solution aligned with the MongoDB requirement and avoid adding unused relational persistence code.
+
+---
+
 ## Business Rules
 
 The retail website applies these discount rules:
@@ -815,13 +825,18 @@ mvn clean verify sonar:sonar \
   -Dsonar.token=YOUR_TOKEN
 ```
 
-SonarQube analysis: SUCCESSFUL
-Project key: retail-discount-service
-Dashboard: http://localhost:9000/dashboard?id=retail-discount-service
-Tests run: 38
-Failures: 0
-Errors: 0
-Build: SUCCESS
+| Metric            |              Result |
+| ----------------- | ------------------: |
+| Quality Gate      |              Passed |
+| Security          |       0 open issues |
+| Reliability       |       0 open issues |
+| Maintainability   |      20 open issues |
+| Coverage          |               97.8% |
+| Duplications      |                0.0% |
+| Tests             | 38 passed, 0 failed |
+| Build             |             Success |
+| Security Hotspots |                   1 |
+
 
 ---
 
