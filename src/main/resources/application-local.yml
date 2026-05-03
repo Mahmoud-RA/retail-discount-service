@@ -1,3 +1,20 @@
 spring:
-    mongodb:
-      uri: mongodb://localhost:27017/retail_discount_db
+  mongodb:
+    uri: mongodb://localhost:27017/retail_discount_db
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/retail_discount_audit}
+    username: ${SPRING_DATASOURCE_USERNAME:retail_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:retail_password_123}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: UTC

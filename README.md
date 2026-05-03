@@ -24,13 +24,35 @@ The service uses MongoDB for persistence, supports Docker Compose startup, appli
 
 ---
 
-## Persistence Design Note: MongoDB vs Hibernate JPA
+## Persistence Design: MongoDB + Hibernate JPA
 
-The assessment mentions both **Hibernate JPA** and **MongoDB persistence**. This implementation uses **Spring Data MongoDB** because MongoDB was explicitly required as the persistence layer.
+The assessment requires both MongoDB persistence and Hibernate JPA.
 
-The application models are stored as MongoDB documents using Spring Data MongoDB repositories instead of relational JPA entities. Hibernate/JPA was not added because it is designed for relational database persistence, while this project persists users, items, and bills in MongoDB collections.
+This project uses MongoDB as the primary persistence layer for the retail discount domain:
 
-This is an intentional design decision to keep the solution aligned with the MongoDB requirement and avoid adding unused relational persistence code.
+- users
+- items
+- bills
+
+MongoDB stores the full business documents and bill calculation snapshots used by the REST APIs.
+
+Hibernate JPA is also included and used with PostgreSQL for relational audit persistence. Each successful bill calculation writes a compact audit row to the `bill_audit` table through Spring Data JPA and Hibernate ORM.
+
+### Databases Used
+
+| Database | Purpose |
+|---|---|
+| MongoDB | Main business persistence for users, items, and bills |
+| PostgreSQL | Hibernate/JPA audit persistence for bill calculation history |
+
+Flyway manages the PostgreSQL schema migration, and Hibernate validates the JPA entity mapping at startup.
+
+### Run with Docker Compose
+
+```bash
+docker compose up --build
+```
+
 
 ---
 

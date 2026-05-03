@@ -17,6 +17,7 @@ import com.d360.retailDiscountService.model.enums.items.ItemCategoryEnum;
 import com.d360.retailDiscountService.repository.BillRepository;
 import com.d360.retailDiscountService.repository.ItemRepository;
 import com.d360.retailDiscountService.repository.UserRepository;
+import com.d360.retailDiscountService.service.BillAuditService;
 import com.d360.retailDiscountService.service.BillService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 
+    private final BillAuditService billAuditService;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final BillRepository billRepository;
@@ -82,6 +84,7 @@ public class BillServiceImpl implements BillService {
                                         .build())
                                 .createdAt(LocalDateTime.now())
                                 .build());
+        billAuditService.audit(savedBill);
         return BillCalculationResponse.builder()
                 .billId(savedBill.getId())
                 .billAmount(billAmount)

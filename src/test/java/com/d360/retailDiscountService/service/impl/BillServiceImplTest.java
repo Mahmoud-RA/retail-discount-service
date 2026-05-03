@@ -18,6 +18,7 @@ import com.d360.retailDiscountService.model.enums.users.UserTypeEnum;
 import com.d360.retailDiscountService.repository.BillRepository;
 import com.d360.retailDiscountService.repository.ItemRepository;
 import com.d360.retailDiscountService.repository.UserRepository;
+import com.d360.retailDiscountService.service.BillAuditService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,6 +42,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BillServiceImplTest {
+
+    @Mock
+    private BillAuditService billAuditService;
 
     @Mock
     private UserRepository userRepository;
@@ -92,6 +96,7 @@ class BillServiceImplTest {
         verify(userRepository).findByUserId(1001L);
         verify(itemRepository).findByItemIdIn(List.of(2001L, 2002L));
         verify(billRepository).save(any(BillDocument.class));
+        verify(billAuditService).audit(any(BillDocument.class));
     }
 
     @Test
@@ -110,6 +115,7 @@ class BillServiceImplTest {
         assertThat(response.getBillAmount()).isEqualByComparingTo("300.00");
         assertThat(response.getDiscountAmount()).isEqualByComparingTo("45.00");
         assertThat(response.getNetPayableAmount()).isEqualByComparingTo("255.00");
+        verify(billAuditService).audit(any(BillDocument.class));
     }
 
     @Test
@@ -128,6 +134,7 @@ class BillServiceImplTest {
         assertThat(response.getBillAmount()).isEqualByComparingTo("300.00");
         assertThat(response.getDiscountAmount()).isEqualByComparingTo("30.00");
         assertThat(response.getNetPayableAmount()).isEqualByComparingTo("270.00");
+        verify(billAuditService).audit(any(BillDocument.class));
     }
 
     @Test
@@ -146,6 +153,7 @@ class BillServiceImplTest {
         assertThat(response.getBillAmount()).isEqualByComparingTo("300.00");
         assertThat(response.getDiscountAmount()).isEqualByComparingTo("15.00");
         assertThat(response.getNetPayableAmount()).isEqualByComparingTo("285.00");
+        verify(billAuditService).audit(any(BillDocument.class));
     }
 
     @Test
@@ -164,6 +172,7 @@ class BillServiceImplTest {
         assertThat(response.getBillAmount()).isEqualByComparingTo("100.00");
         assertThat(response.getDiscountAmount()).isEqualByComparingTo("5.00");
         assertThat(response.getNetPayableAmount()).isEqualByComparingTo("95.00");
+        verify(billAuditService).audit(any(BillDocument.class));
     }
 
     @Test
@@ -180,6 +189,7 @@ class BillServiceImplTest {
                 .isEqualTo(ErrorCode.USER_NOT_FOUND);
 
         verifyNoInteractions(itemRepository, billRepository);
+        verify(billAuditService, never()).audit(any());
     }
 
     @Test
@@ -197,7 +207,7 @@ class BillServiceImplTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("errorCode")
                 .isEqualTo(ErrorCode.ITEM_NOT_FOUND);
-
+        verify(billAuditService, never()).audit(any());
         verify(billRepository, never()).save(any());
     }
 
