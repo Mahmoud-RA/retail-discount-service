@@ -45,7 +45,7 @@ Hibernate JPA is also included and used with PostgreSQL for relational audit per
 | MongoDB | Main business persistence for users, items, and bills |
 | PostgreSQL | Hibernate/JPA audit persistence for bill calculation history |
 
-Flyway manages the PostgreSQL schema migration, and Hibernate validates the JPA entity mapping at startup.
+PostgreSQL schema initialization is handled by `db/init-postgres.sql` through Docker Compose, and Hibernate/JPA is used to persist bill audit records into the `bill_audit` table.
 
 ### Run with Docker Compose
 
@@ -90,20 +90,13 @@ floor(billAmount / 100) * 5
 
 ---
 
-## Persistence Note
-
-The assessment lists Hibernate JPA and MongoDB. Since MongoDB is explicitly required for persistence, this project uses Spring Data MongoDB repositories instead of Hibernate/JPA entities.
-
-The persistence model is document-based and stores users, items, and bill snapshots in MongoDB collections.
-
----
-
 ## Project Structure
 
 ```text
 retail-discount-service/
 ├── db/
 │   ├── init-mongo.js
+|   ├── init-postgres.sql
 ├── docs/
 │   └── uml-class-diagram.png
 ├── src/
